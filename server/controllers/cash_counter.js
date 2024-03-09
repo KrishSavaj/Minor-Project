@@ -24,20 +24,12 @@ module.exports.AddEntry = async (req, res) => {
   entry.date = new Date().toLocaleDateString("de-DE");
   entry.suplierId = sup._id;
   entry.customerId = cust._id;
-  entry.lotNo = cash.lotno;
-  entry.boxNo = cash.boxno;
-  entry.pieces = cash.pieces;
   entry.fishId = fish._id;
   entry.kg = cash.kg;
   entry.rate = cash.rate;
   entry.amount = cash.kg * cash.rate;
 
-  if (cash.mode === "cash") {
-    entry.cash = true;
-    entry.credit = false;
-  } else {
-    entry.cash = false;
-    entry.credit = true;
+  if (cust._id != "65d6c52be679795fbe3def03") {
     await Customer.findByIdAndUpdate(entry.customerId, {
       $inc: { credit: entry.amount },
     });
@@ -57,13 +49,12 @@ module.exports.showCashCounter = async (req, res) => {
   res.render("../views/cashcounter/cash_counter_show.ejs", { cc });
 };
 
-
 // deleting particular entry.
-module.exports.deleteEntry = async (req,res) => {
-  let {id} = req.params;
+module.exports.deleteEntry = async (req, res) => {
+  let { id } = req.params;
   const deleteObject = await CashCounter.findByIdAndDelete(id);
 
-  if(deleteObject.credit===true){
+  if (deleteObject.customerId != "65d6c52be679795fbe3def03") {
     await Customer.updateOne(
       { _id: deleteObject.customerId },
       { $inc: { credit: -deleteObject.amount } }
@@ -72,4 +63,4 @@ module.exports.deleteEntry = async (req,res) => {
 
   res.redirect("/");
 };
-// 
+//
