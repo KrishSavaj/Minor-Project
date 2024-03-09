@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" action="/cashcounter">
+        <input type="text" placeholder="Suplier Name" name="cash[supname]"><br><br>
+        <input type="text" placeholder="Customer Number" name="cash[custname]"><br><br>
+        <input type="text" placeholder="Sub name" name="cash[subname]"><br><br>
+        <input type="number" placeholder="Lot no" name="cash[lotno]"><br><br>
+        <input type="number" placeholder="Box no" name="cash[boxno]"><br><br>
+        <input type="number" placeholder="Pieces" name="cash[pieces]"><br><br>
+        <input type="text" placeholder="Fish Name" name="cash[fishname]"><br><br>
+        <input type="number" placeholder="Kilo Grams" name="cash[kg]"><br><br>
+        <input type="number" placeholder="Rate" name="cash[rate]"><br><br>
+        <input type="number" placeholder="Amount" name="cash[amount]"><br><br>
+        <input type="radio" name="cash[mode]" id="cs" value="cash">
+        <label for="cs">Cash</label><br><br>
+        <input type="radio" name="cash[mode]" id="credit" value="credit">
+        <label for="credit">Credit</label><br><br>
+        <button>Add</button>
+    </form>
+</body>
+</html>
