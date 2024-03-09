@@ -8,6 +8,7 @@
 <body>
     <% for(c of cc) { %>
         <%= c.suplierId.suplierName %>&nbsp; <%= c.customerId.customerName %> &nbsp;<%= c.fishId.fishName %>&nbsp;<%= c.kg %>&nbsp;*&nbsp;<%= c.rate %>&nbsp;:&nbsp;<%= c.amount %>
+        <a href="/cashcounter/<%= c._id %>/edit">Edit</a><br>
         <form method="post" action="/cashcounter/<%= c._id %>?_method=DELETE">
             <button>Delete</button>
         </form>

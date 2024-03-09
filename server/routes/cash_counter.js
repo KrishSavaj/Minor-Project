@@ -18,6 +18,6 @@ router
   .put(wrapAsync(CashCounterController.editEntry))
   .delete(wrapAsync(CashCounterController.deleteEntry));
 
-router.route(":id/edit").get(wrapAsync(CashCounterController.renderEditForm));
+router.route("/:id/edit").get(wrapAsync(CashCounterController.renderEditForm));
 
 module.exports = router;

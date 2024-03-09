@@ -53,11 +53,19 @@ module.exports.showCashCounter = async (req, res) => {
 
 // edit operation.
 // edit form renderring.
-module.exports.renderEditForm = (req, res) => {};
+module.exports.renderEditForm = async (req, res) => {
+  const { id } = req.params;
+  const cash = await CashCounter.findById(id)
+    .populate("suplierId")
+    .populate("customerId")
+    .populate("fishId");
+
+  res.render("../views/cashcounter/cash_counter_edit.ejs", {cash});
+};
 //
 
 // updating the entry.
-module.exports.editEntry = (req, res) => {};
+module.exports.editEntry = async (req, res) => {};
 //
 //
 
