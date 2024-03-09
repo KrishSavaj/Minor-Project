@@ -5,6 +5,8 @@ const Suplier = require("../models/suplier");
 const Fish = require("../models/fish");
 //
 
+const { mongoose } = require("mongoose");
+
 // renderring new form.
 module.exports.renderAddForm = (req, res) => {
   res.render("../views/cashcounter/cash_counter.ejs");
@@ -60,12 +62,78 @@ module.exports.renderEditForm = async (req, res) => {
     .populate("customerId")
     .populate("fishId");
 
-  res.render("../views/cashcounter/cash_counter_edit.ejs", {cash});
+  res.render("../views/cashcounter/cash_counter_edit.ejs", { cash });
 };
 //
 
 // updating the entry.
-module.exports.editEntry = async (req, res) => {};
+module.exports.editEntry = async (req, res) => {
+  const { id } = req.params;
+  const cash = req.body.cash;
+
+  const cc = await CashCounter.findById(id)
+    .populate("suplierId")
+    .populate("customerId")
+    .populate("fishId");
+
+  let cashcounter = {
+    _id: cc._id,
+    date: cc.date,
+    suplierId: cc.suplierId._id,
+    customerId: cc.customerId._id,
+    subName: cc.subName,
+    fishId: cc.fishId._id,
+    kg: cash.kg,
+    rate: cash.rate,
+    amount: cash.kg * cash.rate,
+  };
+
+  if (cash.supname !== cc.suplierId.suplierName) {
+    const sup = await Suplier.findOne({ suplierName: cash.supname });
+    cashcounter.suplierId = sup._id;
+  }
+
+  if (cash.fishname !== cc.fishId.fishName) {
+    const fish = await Fish.findOne({ fishName: cash.fishname });
+    cashcounter.fishId = fish._id;
+  }
+
+  if (cash.custname !== cc.customerId.customerId) {
+    if (cash.custname == "CASH SALES") {
+      await Customer.findByIdAndUpdate(cc.customerId._id, {
+        $inc: { credit: -cc.amount },
+      });
+      cashcounter.customerId = "65d6c52be679795fbe3def03";
+    } else if (cc.customerId.customerName == "CASH SALES") {
+      const cust = await Customer.findOneAndUpdate(
+        { customerName: cash.custname },
+        { $inc: { credit: cashcounter.amount } },
+        { new: true }
+      );
+      cashcounter.customerId = cust._id;
+    } else {
+      await Customer.findByIdAndUpdate(cc.customerId._id, {
+        $inc: { credit: -cc.amount },
+      });
+      const cust = await Customer.findOneAndUpdate(
+        { customerName: cash.custname },
+        { $inc: { credit: cashcounter.amount } },
+        { new: true }
+      );
+      cashcounter.customerId = cust._id;
+    }
+  } else if (cc.amount != cashcounter.amount) {
+    if (cc.customerId._id != "65d6c52be679795fbe3def03") {
+      await Customer.findByIdAndUpdate(cc.customerId._id, {
+        $inc: { credit: cashcounter.amount - cc.amount },
+      });
+    }
+  }
+
+  await CashCounter.findByIdAndUpdate(id, { ...cashcounter });
+
+  res.redirect("/");
+};
 //
 //
 
