@@ -49,7 +49,17 @@ module.exports.showCashCounter = async (req, res) => {
     .populate("fishId");
   res.render("../views/cashcounter/cash_counter_show.ejs", { cc });
 };
-// 
+//
+
+// edit operation.
+// edit form renderring.
+module.exports.renderEditForm = (req, res) => {};
+//
+
+// updating the entry.
+module.exports.editEntry = (req, res) => {};
+//
+//
 
 // deleting particular entry.
 module.exports.deleteEntry = async (req, res) => {
