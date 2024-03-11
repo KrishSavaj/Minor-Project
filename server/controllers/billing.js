@@ -1,9 +1,5 @@
 // requiring the cash counter schema.
 const CashCounter = require("../models/cash_counter");
-
-const Fish = require("../models/fish");
-
-const suplier = require("../models/suplier");
 //
 
 module.exports.generateBill = async (req, res) => {
