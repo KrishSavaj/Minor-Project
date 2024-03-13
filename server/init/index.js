@@ -19,7 +19,7 @@ async function main() {
   await mongoose.connect(mongo);
 }
 
-// it is added because adding colunm sales at an end...
+// it is added because adding column sales at an end...
 // async function suplier() {
 //   const cash_counter = await CashCounter.find();
 
