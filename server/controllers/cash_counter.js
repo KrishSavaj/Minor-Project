@@ -31,6 +31,10 @@ module.exports.AddEntry = async (req, res) => {
   entry.rate = cash.rate;
   entry.amount = cash.kg * cash.rate;
 
+  await Suplier.findByIdAndUpdate(sup._id, {
+    $inc: { sales: entry.amount },
+  });
+
   if (cust._id != "65d6c52be679795fbe3def03") {
     await Customer.findByIdAndUpdate(entry.customerId, {
       $inc: { credit: entry.amount },
@@ -148,6 +152,10 @@ module.exports.deleteEntry = async (req, res) => {
       { $inc: { credit: -deleteObject.amount } }
     );
   }
+
+  await Suplier.findByIdAndUpdate(deleteObject._id, {
+    $inc: { sales: -deleteObject.amount },
+  });
 
   res.redirect("/");
 };
