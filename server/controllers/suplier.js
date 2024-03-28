@@ -24,28 +24,33 @@ module.exports.addSuplier = async (req, res) => {
 module.exports.showSuplier = async (req, res) => {
   let suplier = await Suplier.find();
 
-  res.render("../views/suplier/suplier_show.ejs", { suplier });
+  res.json(suplier);
+
+  // res.render("../views/suplier/suplier_show.ejs", { suplier });
 };
 //
 
 // updating particular suplier details.
-module.exports.renderEditForm = async (req,res) => {
-  let {id} = req.params;
+module.exports.renderEditForm = async (req, res) => {
+  let { id } = req.params;
   let suplier = await Suplier.findById(id);
-  res.render("../views/suplier/edit_suplier.ejs",{suplier});
+
+  res.json(suplier);
+
+  // res.render("../views/suplier/edit_suplier.ejs", { suplier });
 };
 
-module.exports.editSuplier = async (req,res) => {
-  let {id} = req.params;
-  await Suplier.findByIdAndUpdate(id,req.body.suplier);
+module.exports.editSuplier = async (req, res) => {
+  let { id } = req.params;
+  await Suplier.findByIdAndUpdate(id, req.body.suplier);
   res.redirect("/");
 };
-// 
+//
 
 // deleting particular suplier from the database.
-module.exports.deleteSuplier = async (req,res) =>{
-  let {id} = req.params;
+module.exports.deleteSuplier = async (req, res) => {
+  let { id } = req.params;
   await Suplier.findByIdAndDelete(id);
   res.redirect("/");
 };
-// 
+//

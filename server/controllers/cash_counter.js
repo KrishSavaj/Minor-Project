@@ -26,6 +26,7 @@ module.exports.AddEntry = async (req, res) => {
   entry.date = new Date().toLocaleDateString("de-DE");
   entry.suplierId = sup._id;
   entry.customerId = cust._id;
+  entry.subName = cash.subname;
   entry.fishId = fish._id;
   entry.kg = cash.kg;
   entry.rate = cash.rate;
@@ -49,11 +50,15 @@ module.exports.AddEntry = async (req, res) => {
 
 // read operation.
 module.exports.showCashCounter = async (req, res) => {
-  const cc = await CashCounter.find()
+  const today_date = new Date().toLocaleDateString("de-DE");
+
+  const cc = await CashCounter.find({ date: today_date })
     .populate("suplierId")
     .populate("customerId")
     .populate("fishId");
-  res.render("../views/cashcounter/cash_counter_show.ejs", { cc });
+
+  res.json(cc);
+  // res.render("../views/cashcounter/cash_counter_show.ejs", { cc });
 };
 //
 
@@ -65,6 +70,8 @@ module.exports.renderEditForm = async (req, res) => {
     .populate("suplierId")
     .populate("customerId")
     .populate("fishId");
+
+  res.json(cash);
 
   res.render("../views/cashcounter/cash_counter_edit.ejs", { cash });
 };
@@ -85,7 +92,7 @@ module.exports.editEntry = async (req, res) => {
     date: cc.date,
     suplierId: cc.suplierId._id,
     customerId: cc.customerId._id,
-    subName: cc.subName,
+    subName: cash.subname,
     fishId: cc.fishId._id,
     kg: cash.kg,
     rate: cash.rate,

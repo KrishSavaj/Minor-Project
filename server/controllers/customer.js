@@ -24,28 +24,32 @@ module.exports.addCustomer = async (req, res) => {
 module.exports.showCustomer = async (req, res) => {
   let cust = await Customer.find();
 
-  res.render("../views/customer/customer_show.ejs", { cust });
+  res.json(cust);
+
+  // res.render("../views/customer/customer_show.ejs", { cust });
 };
 //
 
 // updatig particular customer detais.
-module.exports.renderEditForm = async (req,res) => {
-  let {id} = req.params;
+module.exports.renderEditForm = async (req, res) => {
+  let { id } = req.params;
   let customer = await Customer.findById(id);
-  res.render("../views/customer/edit_customer.ejs",{customer});
-};  
 
-module.exports.editCustomer = async (req,res) => {
-  let {id} = req.params;
-  await Customer.findByIdAndUpdate(id,req.body.customer);
+  res.json(customer);
+  // res.render("../views/customer/edit_customer.ejs", { customer });
+};
+
+module.exports.editCustomer = async (req, res) => {
+  let { id } = req.params;
+  await Customer.findByIdAndUpdate(id, req.body.customer);
   res.redirect("/");
 };
-// 
+//
 
 // deleting the particular customer.
-module.exports.deleteCustomer = async (req,res) => {
-  let {id} = req.params;
+module.exports.deleteCustomer = async (req, res) => {
+  let { id } = req.params;
   await Customer.findByIdAndDelete(id);
   res.redirect("/");
 };
-// 
+//

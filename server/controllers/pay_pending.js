@@ -35,7 +35,9 @@ module.exports.updateEntry = async (req, res) => {
 module.exports.showPayPending = async (req, res) => {
   const pay = await PayPending.find().populate("customerId");
 
-  res.render("../views/paypending/pay_pending_show.ejs", { pay });
+  res.json(pay);
+
+  // res.render("../views/paypending/pay_pending_show.ejs", { pay });
 };
 //
 
@@ -44,7 +46,9 @@ module.exports.renderEditForm = async (req, res) => {
   let { id } = req.params;
   let p = await PayPending.findById(id).populate("customerId");
 
-  res.render("../views/paypending/pay_pending_edit.ejs", { p });
+  res.json(p);
+
+  // res.render("../views/paypending/pay_pending_edit.ejs", { p });
 };
 
 module.exports.editPayPending = async (req, res) => {
